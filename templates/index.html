@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restoran Ayam Jeze</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #8B0000 0%, #4B0000 100%);
+            color: #FFF8E1;
+            font-family: 'Georgia', serif;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .title-box {
+            background: rgba(75, 0, 0, 0.95);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px 50px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .title-box h1 {
+            color: #FFD700;
+            margin: 0 0 10px;
+            font-size: 42px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        }
+        
+        .title-box p {
+            color: #FFA500;
+            font-size: 20px;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .form-box {
+            background: rgba(75, 0, 0, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #FFD700;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        h2 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        label {
+            display: block;
+            margin: 20px 0 8px;
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 2px solid #FFD700;
+            background: #2a0000;
+            color: #FFF8E1;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 25px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B0000;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .flash {
+            background: #FFD700;
+            color: #8B0000;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-box">
+                <h1>🍗 Restoran Ayam Jeze</h1>
+                <p>"Ayam Terenak Se-Indonesia"</p>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-box">
+            <h2>📝 Pesan Sekarang</h2>
+            <form method="POST" action="/pesan">
+                <label>Nomor Meja</label>
+                <input type="number" name="nomor_meja" placeholder="Contoh: 5" min="1" required>
+
+                <label>Nama Pemesan</label>
+                <input type="text" name="nama" placeholder="Nama kamu" required>
+
+                <label>Pilih Menu</label>
+                <select name="menu" required>
+                    <option value="">-- Pilih Menu --</option>
+                    {% for m in menus %}
+                    <option value="{{ m.nama }}">{{ m.nama }} - Rp {{ "{:,}".format(m.harga) }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Catatan</label>
+                <textarea name="catatan" rows="3" placeholder="Contoh: Tidak pedas"></textarea>
+
+                <label>Metode Pembayaran</label>
+                <select name="metode_bayar" required>
+                    <option value="Cash">💵 Cash</option>
+                    <option value="QRIS">📱 QRIS</option>
+                    <option value="Transfer">🏦 Transfer</option>
+                </select>
+
+                <button type="submit">KIRIM PESAN</button>
+            </form>
+        </div>
+    </div>
+
+   <!-- MASKOT BESAR POJOK KAN BAWAH -->
+<img src="{{ url_for('static', filename='uploads/maskot.png') }}" 
+     style="position: fixed; bottom: 40px; right: 40px; width: 280px; height: auto; opacity: 0.9; z-index: 9999; pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));"
+     alt="Maskot Ayam Jeze">
+</body>
+</html>
+</body>
+</html>

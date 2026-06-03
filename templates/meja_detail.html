@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meja {{ nomor_meja }} - Restoran Ayam Jeze</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #8B0000 0%, #4B0000 100%);
+            color: #FFF8E1;
+            font-family: 'Georgia', serif;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .box {
+            background: rgba(75, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: auto;
+            border: 3px solid #FFD700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h2 {
+            color: #FFD700;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        .back {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .back a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #2a0000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #FFD700;
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background: #FFD700;
+            color: #8B0000;
+            font-weight: 700;
+        }
+        .total-row {
+            background: rgba(255, 215, 0, 0.2);
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .btn-bayar {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00FF7F 0%, #32CD32 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 20px;
+            margin-top: 30px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .btn-bayar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,255,127,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Detail Meja {{ nomor_meja }}</h2>
+        <div class="back">
+            <a href="/kasir">⬅ Kembali ke Kasir</a>
+        </div>
+
+        {% if pesanan %}
+        <table>
+            <tr><th>Menu</th><th>Nama</th><th>Total</th><th>Metode</th><th>Status</th></tr>
+            {% for p in pesanan %}
+            <tr>
+                <td>{{ p.menu }}</td>
+                <td>{{ p.nama }}</td>
+                <td>Rp {{ "{:,}".format(p.total) }}</td>
+                <td>{{ p.metode_bayar }}</td>
+                <td style="color:#FF6347">{{ p.status_bayar }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="2">Total Bayar</td>
+                <td colspan="3">Rp {{ "{:,}".format(total_meja) }}</td>
+            </tr>
+        </table>
+
+        <a href="/bayar_meja/{{ nomor_meja }}" class="btn-bayar">💰 Bayar Lunas Meja {{ nomor_meja }}</a>
+        {% else %}
+        <h3 style="text-align:center; color:#32CD32; margin-top:50px;">Meja Kosong</h3>
+        {% endif %}
+    </div>
+    <!-- MASKOT BESAR POJOK KAN BAWAH -->
+<img src="{{ url_for('static', filename='uploads/maskot.png') }}" 
+     style="position: fixed; bottom: 40px; right: 40px; width: 280px; height: auto; opacity: 0.9; z-index: 9999; pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));"
+     alt="Maskot Ayam Jeze">
+</body>
+</html>
+</body>
+</html>

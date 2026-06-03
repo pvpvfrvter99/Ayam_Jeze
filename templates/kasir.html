@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Meja - Kasir</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #8B0000 0%, #4B0000 100%);
+            color: #FFF8E1;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+        }
+
+       .title-box {
+            background: rgba(75, 0, 0, 0.95);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px 40px;
+            margin: 0 auto 30px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+       .title-box h1 {
+            color: #FFD700;
+            font-size: 42px;
+            margin: 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        }
+
+       .navbar {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(75, 0, 0, 0.9);
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+        }
+       .navbar a {
+            color: #FFD700;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+       .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(75, 0, 0, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #FFD700;
+        }
+        th {
+            background: #FFD700;
+            color: #8B0000;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #4B0000;
+        }
+        tr:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+       .btn-bayar {
+            background: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+       .btn-detail {
+            background: #17a2b8;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+       .flash {
+            background: #FFD700;
+            color: #8B0000;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title-box">
+            <h1>Status Meja</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="navbar">
+            <a href="/admin">🏠 Dashboard</a>
+            <a href="/laporan">📊 Laporan</a>
+            <a href="/logout">🚪 Logout</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <tr>
+                <th>Meja</th>
+                <th>Jumlah Pesanan</th>
+                <th>Total Tagihan</th>
+                <th>Aksi</th>
+            </tr>
+            {% set meja_list = {} %}
+            {% for p in pesanan %}
+                {% if p.nomor_meja not in meja_list %}
+                    {% set _ = meja_list.update({p.nomor_meja: {'total': p.total, 'jumlah': 1}}) %}
+                {% else %}
+                    {% set _ = meja_list.update({p.nomor_meja: {'total': meja_list[p.nomor_meja].total + p.total, 'jumlah': meja_list[p.nomor_meja].jumlah + 1}}) %}
+                {% endif %}
+            {% endfor %}
+
+            {% for nomor, data in meja_list.items() %}
+            <tr>
+                <td><b>Meja {{ nomor }}</b></td>
+                <td>{{ data.jumlah }} item</td>
+                <td>Rp {{ "{:,}".format(data.total) }}</td>
+                <td>
+                    <a href="/meja_detail/{{ nomor }}" class="btn-detail">Detail</a>
+                    <a href="/bayar_meja/{{ nomor }}" class="btn-bayar" onclick="return confirm('Bayar Meja {{ nomor }}?')">Bayar Lunas</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align:center;padding:30px;">Belum ada pesanan aktif</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <!-- MASKOT BESAR POJOK KAN BAWAH -->
+<img src="{{ url_for('static', filename='uploads/maskot.png') }}" 
+     style="position: fixed; bottom: 40px; right: 40px; width: 280px; height: auto; opacity: 0.9; z-index: 9999; pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));"
+     alt="Maskot Ayam Jeze">
+</body>
+</html>
+</body>
+</html>

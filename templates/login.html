@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Admin - Restoran Ayam Jeze</title>
+    <style>
+        body{background:linear-gradient(135deg,#8B0000 0%,#4B0000 100%);color:#FFF8E1;font-family:Georgia;text-align:center;padding:100px 20px;}
+       .box{background:rgba(75,0,0,0.9);padding:40px;border-radius:20px;max-width:400px;margin:auto;border:3px solid #FFD700;}
+        input{width:100%;padding:14px;margin:10px 0;border-radius:10px;border:2px solid #FFD700;background:#2a0000;color:#FFF8E1;box-sizing:border-box;}
+        button{width:100%;padding:15px;background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);color:#8B0000;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:18px;margin-top:20px;}
+        h2{color:#FFD700;}
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Login Admin</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}<p style="color:#FF6347">{{ messages[0][1] }}</p>{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p style="margin-top:20px;font-size:12px;">Default: admin / admin123</p>
+    </div>
+    <!-- MASKOT POJOK KAN BAWAH -->
+<!-- MASKOT BESAR POJOK KAN BAWAH -->
+<img src="{{ url_for('static', filename='uploads/maskot.png') }}" 
+     style="position: fixed; bottom: 40px; right: 40px; width: 280px; height: auto; opacity: 0.9; z-index: 9999; pointer-events: none; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));"
+     alt="Maskot Ayam Jeze">
+</body>
+</html>
+</body>
+</html>
