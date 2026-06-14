@@ -193,6 +193,18 @@
     </style>
 </head>
 <body>
+<!-- BINTIK REMPAH BERGERAK -->
+<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; 
+background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><circle cx=%2210%22 cy=%2210%22 r=%222%22 fill=%22rgba(255,215,0,0.4)%22/><circle cx=%2230%22 cy=%2230%22 r=%221.5%22 fill=%22rgba(255,165,0,0.3)%22/></svg>'); 
+background-repeat: repeat;
+animation: debuRempah 60s linear infinite;"></div>
+
+<style>
+@keyframes debuRempah {
+    0% { background-position: 0px 0px; }
+    100% { background-position: 400px 400px; }
+}
+</style>
     <div class="container">
         <header>
             <div class="title-box">
