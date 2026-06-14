@@ -269,14 +269,23 @@ if __name__ == '__main__':
             ]
             db.session.add_all(default_menus)
         db.session.commit()
-@app.route('/order', methods=['POST'])
+
+    @app.route('/order', methods=['POST'])
 def order():
     # ... kode simpan pesanan kamu ...
-    flash('Pesanan Berhasil!', 'success')
-    return redirect(url_for('order'))
+    pesanan_baru = Pesanan(...)
+    db.session.add(pesanan_baru)
+    db.session.commit()
     
-    return render_template('sukses.html', pesanan=pesanan_baru)
-if __name__ == "__main__":
-                import os
-                port = int(os.environ.get("PORT", 5000))
-                app.run(host="0.0.0.0", port=port)
+    flash('Pesanan Berhasil!', 'success')
+    return redirect(url_for('sukses', id=pesanan_baru.id))
+
+@app.route('/sukses/<int:id>')
+def sukses(id):
+    pesanan = Pesanan.query.get(id)
+    return render_template('sukses.html', pesanan=pesanan)
+
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
