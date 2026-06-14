@@ -250,30 +250,12 @@ def selesai_pesanan(id):
     db.session.commit()
     return redirect('/admin')
 
-# JALANKAN APP
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        # Buat admin default: username=admin password=admin123
-        if User.query.count() == 0:
-            admin = User(username='admin', password=generate_password_hash('admin123'))
-            db.session.add(admin)
-        # Menu default
-        if Menu.query.count() == 0:
-            default_menus = [
-                Menu(nama="Ayam Crispy", harga=15000, deskripsi="Ayam crispy renyah", foto="default.jpg"),
-                Menu(nama="Ayam Geprek", harga=17000, deskripsi="Pedas nampol", foto="default.jpg"),
-                Menu(nama="Nasi + Ayam", harga=18000, deskripsi="Paket lengkap", foto="default.jpg"),
-                Menu(nama="Es Teh", harga=5000, deskripsi="Segar manis", foto="default.jpg"),
-                Menu(nama="Es Jeruk", harga=6000, deskripsi="Asem segar", foto="default.jpg")
-            ]
-            db.session.add_all(default_menus)
-        db.session.commit()
-
-    @app.route('/order', methods=['POST'])
+@app.route('/order', methods=['POST'])
 def order():
-    # ... kode simpan pesanan kamu ...
-    pesanan_baru = Pesanan(...)
+    nama = request.form.get('nama')
+    menu_id = request.form.get('menu_id')
+    
+    pesanan_baru = Pesanan(nama=nama, menu_id=menu_id, status='Menunggu')
     db.session.add(pesanan_baru)
     db.session.commit()
     
@@ -282,9 +264,9 @@ def order():
 
 @app.route('/sukses/<int:id>')
 def sukses(id):
-    pesanan = Pesanan.query.get(id)
+    pesanan = Pesanan.query.get_or_404(id)
     return render_template('sukses.html', pesanan=pesanan)
-
+    
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 5000))
