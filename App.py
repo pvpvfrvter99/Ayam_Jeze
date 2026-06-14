@@ -13,7 +13,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 import os
-
+import requests
+from flask import flash, redirect
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ayamjeze2026-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restoran.db'
@@ -270,6 +271,32 @@ if __name__ == '__main__':
             ]
             db.session.add_all(default_menus)
         db.session.commit()
+@app.route('/kirim_pesanan/<int:nomor_meja>', methods=['POST'])
+def kirim_pesanan(nomor_meja):
+    nama = request.form['nama']
+    menu = request.form['menu']
+    total = int(request.form['total'])
+    metode_bayar = request.form['metode_bayar']
+
+    pesanan_baru = Pesanan(
+        nomor_meja=nomor_meja,
+        nama=nama,
+        menu=menu,
+        total=total,
+        metode_bayar=metode_bayar
+    )
+    db.session.add(pesanan_baru)
+    db.session.commit()
+    
+    kirim_wa_admin(pesanan_baru)  # <-- TAMBAH INI DOANG
+
+@app.route('/order', methods=['POST'])
+def order():
+    # ... kode simpan pesanan kamu ...
+    flash('Pesanan Berhasil!', 'success')
+    return redirect(url_for('order'))
+    
+    return render_template('sukses.html', pesanan=pesanan_baru)
 if __name__ == "__main__":
                 import os
                 port = int(os.environ.get("PORT", 5000))
