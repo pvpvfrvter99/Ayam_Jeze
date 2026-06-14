@@ -13,8 +13,6 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 import os
-import requests
-from flask import flash, redirect
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ayamjeze2026-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restoran.db'
